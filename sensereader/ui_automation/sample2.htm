@@ -1,0 +1,109 @@
+<html>
+<head>
+<title>Sample2</title>
+<script language="VBScript">
+' 음성 속성(속도, 높이 크기)의 최소 최대값을 위한 상수
+const minspeakvalue = 0
+const maxspeakvalue = 10
+' 센스리더 Application객체를 얻는다.
+set app = createobject("sensereader.application")
+' SpeechControlers객체를 얻는다.
+set ctrls = app.speechcontrolers
+' "test"란 이름으로 새로운 SpeechControler객체를 얻는다.
+set ctrl = ctrls.add("test")
+' SpeechControler객체를 초기화한다.
+ctrl.init ""
+' 음성 출력에 사용할 SpeakInfo객체를 얻는다.
+set speakinfo = ctrl.newspeakinfo
+' 스페이스와 리턴문자 읽기를 해제한다.
+speakinfo.flags = speakinfo.flags-(32+128)
+
+' 편집창에 입력된 텍스트를 음성출력하는 함수
+sub speak()
+stopandspeak(testform.speaktext.value)
+end sub
+
+' 전달된 문자열을 음성출력하는 함수. 음성이 출력중이면 먼저 중지시킨후 출력한다.
+sub stopandspeak(text)
+stopspeaking
+ctrl.speak text, speakinfo
+end sub
+
+' 음성을 중지하는 함수
+sub stopspeaking()
+ctrl.stop
+end sub
+
+' 속도를 증가시키는 함수
+sub speedup()
+if speakinfo.speed < maxspeakvalue then
+speakinfo.speed = speakinfo.speed+1
+end if
+str = "속도 " & speakinfo.speed
+stopandspeak(str)
+end sub
+
+' 속도를 감소시키는 함수
+sub speeddown()
+if speakinfo.speed > minspeakvalue then
+speakinfo.speed = speakinfo.speed-1
+end if
+str = "속도 " & speakinfo.speed
+stopandspeak(str)
+end sub
+
+' 높이를 증가시키는 함수.
+sub pitchup()
+if speakinfo.pitch < maxspeakvalue then
+speakinfo.pitch = speakinfo.pitch+1
+end if
+str = "높이 " & speakinfo.pitch
+stopandspeak(str)
+end sub
+
+' 높이를 감소시키는 함수.
+sub pitchdown()
+if speakinfo.pitch > minspeakvalue then
+speakinfo.pitch = speakinfo.pitch-1
+end if
+str = "높이 " & speakinfo.pitch
+stopandspeak(str)
+end sub
+
+' 크기를 증가시키는 함수.
+sub volumeup()
+if speakinfo.volume < maxspeakvalue then
+speakinfo.volume = speakinfo.volume+1
+end if
+str = "크기 " & speakinfo.volume
+stopandspeak(str)
+end sub
+
+' 크기를 감소시키는 함수.
+sub volumedown()
+if speakinfo.volume > minspeakvalue then
+speakinfo.volume = speakinfo.volume-1
+end if
+str = "크기 " & speakinfo.volume
+stopandspeak(str)
+end sub
+</script>
+</head>
+<body>
+<form name="testform">
+<textarea name="speaktext" cols="100" rows="10"></textarea>
+<p>
+<input type="button" value="재생" onclick="speak">&nbsp;
+<input type="button" value="중지" onclick="stopspeaking">
+<br>
+<input type="button" value="속도 증가" onclick="speedup">&nbsp;
+<input type="button" value="속도 감소" onclick="speeddown">
+<br>
+<input type="button" value="높이 증가" onclick="pitchup">&nbsp;
+<input type="button" value="높이 감소" onclick="pitchdown">
+<br>
+<input type="button" value="크기 증가" onclick="volumeup">&nbsp;
+<input type="button" value="크기 감소" onclick="volumedown">
+</form>
+</body>
+</html>

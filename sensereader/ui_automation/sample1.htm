@@ -1,0 +1,20 @@
+<html>
+<head>
+<title>Sample1</title>
+<script language="VBScript">
+sub speak()
+' 센스리더 Application 객체를 얻는다.
+set app = createobject("sensereader.application")
+' 편집창에 입력된 내용을 센스리더 기본 음성으로 출력한다.
+app.speak testform.speaktext.value
+end sub
+</script>
+</head>
+<body>
+<form name="testform">
+<textarea name="speaktext" cols="100" rows="10"></textarea>
+<p>
+<input type="button" value="재생" onclick="speak">
+</form>
+</body>
+</html>
